@@ -1,5 +1,5 @@
 # Internal
-from types_class import Station
+from types_class import Station_FR, Station_ES
 
 # From python
 from dataclasses import dataclass
@@ -8,30 +8,52 @@ import json
 # External
 import requests
 
-stations = None
-URL_API_STATIONS = "https://mdw02.api-es.ouigo.com/api/Data/GetStations"
+stations_fr = None
+stations_es = None
+URL_API_STATIONS_ES = "https://mdw02.api-es.ouigo.com/api/Data/GetStations"
+URL_API_STATIONS_FR = "https://mdw.api-fr.ouigo.com/api/Data/GetStations"
 
+""" 
+This method call the API for get the stations of France or Spain, save the stations for futures call of this method 
+Example of use: load_stations("ES")
+Response:[Station_ES(_u_i_c_station_code='MT1', name='Madrid - Todas las estaciones', connected_stations=[
+'7160600','7160911', '7171801', '7104040', '7104104', '7103216'], synonyms=['Madrid'], hidden=False), Station_ES(
+_u_i_c_station_code='7171801',.....
+"""
+def load_stations(country: str):
+    global stations_fr
+    global stations_es
 
-def load_stations():
-    global stations
-
-    #  check if the stations are already loaded
-    if stations is not None:
-        return stations
-    stations = {}
     try:
         # If not loaded, call the API
-        response_stations = requests.get(URL_API_STATIONS, timeout=10)
+        if country == "FR":
+
+            if stations_fr is not None:  # check if the stations are already loaded
+                return stations_fr
+
+            # Create the list to save the stations
+            stations_fr = {}
+            response_stations = requests.get(URL_API_STATIONS_FR, timeout=10)  # Call the API to get the stations
+        else:  # If the search is not in France, make the search for Spain
+
+            if stations_es is not None:  # check if the stations are already loaded
+                return stations_es
+
+            stations_es = {}
+            response_stations = requests.get(URL_API_STATIONS_ES, timeout=10)  # Call the API to get the stations
 
         # If the response is OK
         if response_stations.status_code == 200:
             stations_json = response_stations.json()
 
             # Convert the list of dictionaries to a list of Station objects
-            stations = [Station(**station) for station in stations_json]
-
-            return stations
-
+            if country == "FR":
+                stations_fr = [Station_FR(**station) for station in stations_json]
+                return stations_fr
+            else:
+                # Convert the list of dictionaries to a list of Station objects
+                stations_es = [Station_ES(**station) for station in stations_json]
+                return stations_es
         else:
             # If the response is not ok
             print("API call error load_stations ", response_stations.status_code)
@@ -41,50 +63,17 @@ def load_stations():
         print("API call exception load_stations ", e)
 
 
-# Return code Station, only need the name
-def find_station_code_by_name(target_name):
-    stations_dict = {station._u_i_c_station_code: station for station in load_stations()}
+"""
+Return code Station, only need the name
+Example of use FR: find_station_code_by_name("Strasbourg", "FR") -> response: "87212027"
+Example of use ES: find_station_code_by_name("Madrid", "ES") -> response: "MT1"
+"""
+def find_station_code_by_name(target_name, country):
+    stations_dict = {station._u_i_c_station_code: station for station in load_stations(country)}
     for code, info in stations_dict.items():
         if info.name == target_name or target_name in info.synonyms:
             return code  # The station code
     return None
-
-
-class StationsNames:
-    find = staticmethod(find_station_code_by_name)
-
-    def __init__(self):
-        self._Barcelona = "Barcelona"
-        self._Madrid = "Madrid"
-        self._Alicante = "Alicante"
-        self._Valencia = "Valencia"
-        self._Zaragoza = "Zaragoza"
-        self._Albacete = "Albacete"
-
-    @property
-    def Barcelona(self):
-        return self.find(self._Barcelona)
-
-    @property
-    def Madrid(self):
-        return self.find(self._Madrid)
-
-    @property
-    def Alicante(self):
-        return self.find(self._Alicante)
-
-    @property
-    def Valencia(self):
-        return self.find(self._Valencia)
-
-    @property
-    def Zaragoza(self):
-        return self.find(self._Zaragoza)
-
-    @property
-    def Albacete(self):
-        return self.find(self._Albacete)
-
 
 
 STATIONS_CODES = {"Madrid - Todas": "MT1",
