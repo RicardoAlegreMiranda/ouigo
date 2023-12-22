@@ -1,5 +1,5 @@
 # Internal
-import seasson, stations
+import seasson, stations, utils
 from types_class import Train, Trip_hours, Station_ES, Station_FR
 
 # Python
@@ -8,6 +8,10 @@ from datetime import datetime
 
 # External
 import requests
+
+
+class DateProcessingError(Exception):
+    pass
 
 
 # The main class
@@ -19,26 +23,36 @@ class Ouigo:
         self.session = self.session_manager.get_session()
         self.token = self.update_token()
         self.list_stations = stations.load_stations(country)
+        self.util = utils
 
     # Get a list of the lowest prices for each day, in a maximum date range of 30 days
     # Example: get_list_30_days_travels(begin="2024-01-01", end="2024-03-31",destination="Barcelona", origin="Madrid")
     # Example: get_list_30_days_travels(begin="2024-01-01", end="2024-03-31", destination="Paris", origin="Nantes")
     # Response: Train(date='2024-01-01', price=55.0, is_best_price=False, is_best_price_month=False, is_promo=False)
-    def get_list_30_days_travels(self,
-                                 begin: str,  # example: "2024-01-01"
-                                 end: str,  # example: "2024-03-31"
+    def get_list_60_days_travels(self,
+                                 begin: str,  # example: "2024-01-01" # Format YYYY-MM-DD
                                  destination: str,  # example: "Madrid"
-                                 origin: str):  # example: "Barcelona"
+                                 origin: str,  # example: "Barcelona"
+                                 destination_is_code: bool = False):  # Check if the destination is a code or a name
 
         url_es = "https://mdw02.api-es.ouigo.com/api/Calendar/prices"  # Search in Spain
         url_fr = "https://mdw.api-fr.ouigo.com/api/Calendar/prices"  # Search in France
+
+        # Calculate the end of search, you don't recibe prices if you try search in a range of more 30 days of the
+        # current date
+        if not self.util.process_date(begin):
+            return None
+
+        end = self.util.process_date(begin)
 
         # Get the token
         if not self.token:
             self.token = self.update_token()
 
-        destination = self.find_station_code_by_name(destination)  # Search the code of the Station
-        origin = self.find_station_code_by_name(origin)  # Search the code of the Station
+        # If destinations is not a code(is a name like: Barcelona or Paris) , find the station_code
+        if not destination_is_code:
+            destination = self.find_station_code_by_name(destination)  # Search the code of the Station
+            origin = self.find_station_code_by_name(origin)  # Search the code of the Station
 
         payload = json.dumps({
             "direction": "outbound",
@@ -71,11 +85,13 @@ class Ouigo:
             response_json = response.json()
 
             # Convert the list of dictionaries to a list of Train objects
-            trains = [Train(**travel) for travel in response_json]
+            trains = []
+            for travel in response_json:
+                if travel.get('price') is not None:  # Check the price, if not None, add the travel to the list
+                    travel['Destination'] = self.find_station_name_by_code(destination)  # Save the name of destination
+                    trains.append(Train(**travel))
 
             return trains
-        elif response.status_code == 204:
-            print("The date is out of range, please enter a date up to 6 months from the current date.")
         else:
             print("Fail: get_travels ", response.status_code)
 
@@ -83,9 +99,10 @@ class Ouigo:
                            begin: str,  # example: "2024-01-01"
                            end: str,  # example: 2024-03-31"
                            destination: str,  # example: "7171801"
-                           origin: str):  # example: "MT1"
+                           origin: str,  # example: "MT1"
+                           destination_is_code: bool = False):
         lists_travels = []
-        travels = self.get_list_30_days_travels(begin=begin, end=end, destination=destination, origin=origin)
+        travels = self.get_list_60_days_travels(begin=begin, end=end, destination=destination, origin=origin)
 
         for travel in travels:
             mounth = travel.is_best_price_month
@@ -100,15 +117,18 @@ class Ouigo:
     def jornay_search(self,
                       destination: str,
                       origin: str,
-                      outbound_date: str):
+                      outbound_date: str,
+                      destination_is_code: bool = False):
 
         url_es = "https://mdw02.api-es.ouigo.com/api/Sale/journeysearch"
         url_fr = "https://mdw.api-fr.ouigo.com/api/Sale/journeysearch"
         if not self.token:
             self.token = self.update_token()
 
-        destination = self.find_station_code_by_name(destination)  # Search the code of the Station
-        origin = self.find_station_code_by_name(origin)  # Search the code of the Station
+        # If destinations is not a code(is a name like: Barcelona or Paris) , find the station_code
+        if not destination_is_code:
+            destination = self.find_station_code_by_name(destination)  # Search the code of the Station
+            origin = self.find_station_code_by_name(origin)  # Search the code of the Station
 
         payload = json.dumps({
             "destination": destination,
@@ -140,12 +160,12 @@ class Ouigo:
             # Convert the list of dictionaries to a list of Train objects
             outbound = response_json["outbound"]
             for trip in outbound:
-
                 price = trip.get("price")
                 trip = trip.get("departure_station")
                 hour_str = trip.get("departure_timestamp")
                 trip["price"] = price
-                hour_datetime = get_time_from_string(hour_str)
+                trip["destination"] = self.find_station_name_by_code(destination)
+                hour_datetime = self.util.get_time_from_string(hour_str)
                 trip["departure_timestamp"] = hour_datetime
 
                 list_trips_hours.append(Trip_hours(**trip))
@@ -183,10 +203,7 @@ class Ouigo:
             print("token obtenido")
             return token
         else:
-            print("Token no obtenido ", response.status_code)
-            print(response.text)
-
-
+            print("Token no obtenido ", response.status_code, response.text)
 
     """
     Return code Station, only need the name
@@ -199,28 +216,54 @@ class Ouigo:
         for code, info in stations_dict.items():
             if info.name == target_name or target_name in info.synonyms:
                 return code  # The station code
-        return None
+        raise DateProcessingError(f"{target_name} is not a valid name")
 
-    """
-            for journey in outbound:
-                departure_station = journey.get("departure_station")
-                
-                print(departure_station)"""
+    def find_station_name_by_code(self, code):
+        for station in self.list_stations:
+            if station._u_i_c_station_code == code:
+                return station.name
+        raise DateProcessingError(f"{code} is not a valid code station")
+
+    def find_travels(self,
+                     origin: str,  # Example: Madrid, Paris
+                     outbound: str,
+                     inbound: str = None,
+                     destination: str = None,
+                     max_price: float = None,
+                     minimum_departure_time: datetime = None,
+                     maximum_departure_time: datetime = None):
+        trains = []
+        # if you don't have a destination, get all de connected stations of the origin
+        if destination is None:
+            connected_stations = []
+            for station in self.list_stations:
+                if origin in station.name:
+                    for connected in station.connected_stations:
+                        connected_stations.append(connected)
+
+            origin = self.find_station_code_by_name(origin)
+            for station_code in connected_stations:
+                trips = self.jornay_search(outbound_date=outbound,
+                                           origin=origin,
+                                           destination=station_code,
+                                           destination_is_code=True)
+                if max_price is not None:
+                    for trip in trips:
+                        if trip.price <= max_price:
+                            trains.append(trip)
 
 
-# sends a string, and returns a date in datetime format
-def get_time_from_string(time_string):
-    # Parse the time string
-    format_str = "%Y-%m-%dT%H:%M:%S%z"
-    datetime_object = datetime.strptime(time_string, format_str)
-
-    # Get the time from the obtained datetime object
-    time = datetime_object.time()
-
-    return time
+        else:
+            trains.append(self.get_list_60_days_travels(begin=outbound,
+                                                        origin=origin,
+                                                        destination=destination))
+        return trains
 
 
-viajes = Ouigo(country="FR")
-list = viajes.jornay_search(outbound_date="2024-03-31", destination="Paris", origin="Nantes")
-for l in list:
-    print(l)
+viajes = Ouigo(country="es")
+# con = viajes.get_list_60_days_travels("2024-01-01","7171801","MT1",destination_is_code=True)
+
+con = viajes.find_travels(outbound="2024-02-01", origin="Madrid", max_price=20)
+for c in con:
+    print(c)
+# print(viajes.obtener_nombre_estacion_por_codigo("7104040"))

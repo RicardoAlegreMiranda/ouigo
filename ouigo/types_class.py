@@ -9,7 +9,9 @@ class Train:
     price: int
     is_best_price: bool
     is_best_price_month: bool
+    Destination: str
     is_promo: bool = field(default=False)
+
 
 # Spain
 @dataclass
@@ -19,6 +21,7 @@ class Station_ES:
     connected_stations: list
     synonyms: list
     hidden: bool
+
 
 # France
 @dataclass
@@ -42,10 +45,10 @@ class Station_FR:
     top_destination: Optional[bool] = None
 
 
-
 @dataclass
 class Trip_hours:
     departure_timestamp: datetime
     _u_i_c_station_code: str
     name: str
     price: float
+    destination: str
