@@ -46,9 +46,14 @@ class Station_FR:
 
 
 @dataclass
-class Trip_hours:
+class Trip:
     departure_timestamp: datetime
     _u_i_c_station_code: str
     name: str
     price: float
     destination: str
+    outbound: str
+
+    @property
+    def u_i_c_station_code(self):
+        return self._u_i_c_station_code

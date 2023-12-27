@@ -1,0 +1,122 @@
+[
+   {
+      "_u_i_c_station_code":"MT1",
+      "name":"Madrid - Todas las estaciones",
+      "connected_stations":[
+         "7160600",
+         "7160911",
+         "7171801",
+         "7104040",
+         "7104104",
+         "7103216"
+      ],
+      "synonyms":[
+         "Madrid"
+      ],
+      "hidden":false
+   },
+   {
+      "_u_i_c_station_code":"7171801",
+      "name":"Barcelona - Sants",
+      "connected_stations":[
+         "MT1",
+         "7104040",
+         "7160000"
+      ],
+      "synonyms":[
+         "Barcelona"
+      ],
+      "hidden":false
+   },
+   {
+      "_u_i_c_station_code":"7117000",
+      "name":"Madrid - Chamartín - Clara Campoamor",
+      "connected_stations":[
+         "7160600",
+         "7160911",
+         "7103216"
+      ],
+      "synonyms":[
+         "Madrid"
+      ],
+      "hidden":true
+   },
+   {
+      "_u_i_c_station_code":"7160000",
+      "name":"Madrid - Puerta de Atocha - Almudena Grandes",
+      "connected_stations":[
+         "7171801",
+         "7104040",
+         "7104104"
+      ],
+      "synonyms":[
+         "Madrid"
+      ],
+      "hidden":true
+   },
+   {
+      "_u_i_c_station_code":"7103216",
+      "name":"Valencia - Joaquín Sorolla",
+      "connected_stations":[
+         "MT1",
+         "7117000"
+      ],
+      "synonyms":[
+         "Valencia"
+      ],
+      "hidden":false
+   },
+   {
+      "_u_i_c_station_code":"7160911",
+      "name":"Alicante - Terminal",
+      "connected_stations":[
+         "7160600",
+         "MT1",
+         "7117000"
+      ],
+      "synonyms":[
+         "Alicante"
+      ],
+      "hidden":false
+   },
+   {
+      "_u_i_c_station_code":"7104040",
+      "name":"Zaragoza - Delicias",
+      "connected_stations":[
+         "7171801",
+         "MT1",
+         "7104104",
+         "7160000"
+      ],
+      "synonyms":[
+         "Zaragoza"
+      ],
+      "hidden":false
+   },
+   {
+      "_u_i_c_station_code":"7160600",
+      "name":"Albacete - Los Llanos",
+      "connected_stations":[
+         "7160911",
+         "MT1",
+         "7117000"
+      ],
+      "synonyms":[
+         "Albacete"
+      ],
+      "hidden":false
+   },
+   {
+      "_u_i_c_station_code":"7104104",
+      "name":"Tarragona - Camp de Tarragona",
+      "connected_stations":[
+         "MT1",
+         "7104040",
+         "7160000"
+      ],
+      "synonyms":[
+         "Tarragona"
+      ],
+      "hidden":false
+   }
+]

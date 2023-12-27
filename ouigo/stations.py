@@ -1,5 +1,5 @@
 # Internal
-from types_class import Station_FR, Station_ES
+from ouigo.types_class import Station_FR, Station_ES
 
 # From python
 from dataclasses import dataclass
@@ -13,14 +13,16 @@ stations_es = None
 URL_API_STATIONS_ES = "https://mdw02.api-es.ouigo.com/api/Data/GetStations"
 URL_API_STATIONS_FR = "https://mdw.api-fr.ouigo.com/api/Data/GetStations"
 
-""" 
-This method call the API for get the stations of France or Spain, save the stations for futures call of this method 
-Example of use: load_stations("ES")
-Response:[Station_ES(_u_i_c_station_code='MT1', name='Madrid - Todas las estaciones', connected_stations=[
-'7160600','7160911', '7171801', '7104040', '7104104', '7103216'], synonyms=['Madrid'], hidden=False), Station_ES(
-_u_i_c_station_code='7171801',.....
-"""
+
 def load_stations(country: str):
+    """
+    This method call the API for get the stations of France or Spain, save the stations for futures call of this method
+    Example of use: load_stations("ES")
+    Response:[Station_ES(_u_i_c_station_code='MT1', name='Madrid - Todas las estaciones', connected_stations=[
+    '7160600','7160911', '7171801', '7104040', '7104104', '7103216'], synonyms=['Madrid'], hidden=False), Station_ES(
+    _u_i_c_station_code='7171801',.....
+    """
+
     global stations_fr
     global stations_es
 
@@ -64,18 +66,8 @@ def load_stations(country: str):
 
 
 """
-Return code Station, only need the name
-Example of use FR: find_station_code_by_name("Strasbourg", "FR") -> response: "87212027"
-Example of use ES: find_station_code_by_name("Madrid", "ES") -> response: "MT1"
-"""
-def find_station_code_by_name(target_name, country):
-    stations_dict = {station._u_i_c_station_code: station for station in load_stations(country)}
-    for code, info in stations_dict.items():
-        if info.name == target_name or target_name in info.synonyms:
-            return code  # The station code
-    return None
 
-
+example of:
 STATIONS_CODES = {"Madrid - Todas": "MT1",
                   "Barcelona": "7171801",
                   "Madrid - Chamartín": "7117000",
@@ -84,3 +76,4 @@ STATIONS_CODES = {"Madrid - Todas": "MT1",
                   "Alicante": "7160911",
                   "Zaragoza": "7104040",
                   "Albacete ": "7160600", }
+"""
