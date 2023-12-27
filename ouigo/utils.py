@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
 
 
-"""sends a string, and returns a date in datetime format"""
 def get_time_from_string(time_string):
+    """
+        sends a string, and returns a date in datetime format
+        :param time_string: string
+    """
     # Parse the time string
     format_str = "%Y-%m-%dT%H:%M:%S%z"
     datetime_object = datetime.strptime(time_string, format_str)
@@ -13,17 +16,18 @@ def get_time_from_string(time_string):
     return time
 
 
-"""
-Check that the date entered is greater than the current date,
+def process_date(input_date_str: str):  # Format YYYY-MM-DD
 
-Check that the date entered is NOT 5 months older than the current one
+    """
+        Check that the date entered is greater than the current date,
 
-returns a string with adding 60 days to the entered date
-Example: current_date="2024-01-01" input= "2024-05-19" , output= "2024-06-18"
-"""
+        Check that the date entered is NOT 5 months older than the current one
 
+        returns a string with adding 60 days to the entered date
+        Example: current_date="2024-01-01" input= "2024-05-19" , output= "2024-06-18"
 
-def process_date(input_date_str):  # Format YYYY-MM-DD
+        :param input_date_str: string
+    """
     try:
         # Convert the string to a datetime object
         current_date = datetime.now()

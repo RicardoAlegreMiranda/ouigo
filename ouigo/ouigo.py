@@ -46,7 +46,7 @@ class Ouigo:
             destination_is_code (bool): if you use stations code instead of the station name, example: if instead of
              using "Madrid" you use "MT1"
         Returns:
-            return_type: a list of all available trips in the next 60 days
+            List[Train]: a list of all available trips in the next 60 days
             example: Train(date='2024-01-01', price=55.0, is_best_price=False, is_best_price_month=False,
             is_promo=False)
 
@@ -116,7 +116,7 @@ class Ouigo:
                        destination: str,
                        origin: str,
                        outbound_date: str,
-                       destination_is_code: bool = False):  #
+                       destination_is_code: bool = False):
 
         """
         Get all possible tickets for a specific date, returns the price and available times, por example: find all
@@ -190,6 +190,7 @@ class Ouigo:
             raise DateProcessingError(f"Fail in journal_search,  status code: {response.status_code},"
                                       f"text: {response.text}")
 
+    # The main method for search travels
     def find_travels(self,
                      origin: str,  # Example: Madrid, Paris
                      outbound: str,  # Example: "2024-12-31"

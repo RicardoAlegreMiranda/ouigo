@@ -63,17 +63,3 @@ def load_stations(country: str):
 
     except Exception as e:
         print("API call exception load_stations ", e)
-
-
-"""
-
-example of:
-STATIONS_CODES = {"Madrid - Todas": "MT1",
-                  "Barcelona": "7171801",
-                  "Madrid - Chamartín": "7117000",
-                  "Madrid - Atocha": "7160000",
-                  "Valencia": "7103216",
-                  "Alicante": "7160911",
-                  "Zaragoza": "7104040",
-                  "Albacete ": "7160600", }
-"""

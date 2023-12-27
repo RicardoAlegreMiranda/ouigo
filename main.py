@@ -1,21 +1,19 @@
 from ouigo import Ouigo
-from datetime import timedelta, datetime, time
-import concurrent.futures
-from concurrent.futures import ThreadPoolExecutor
+from datetime import time
 
-API = Ouigo(country="fr")
-
-viajes = API.find_travels(origin="paris",
-                                                  destination="nantes",
-                                                  outbound="2024-01-05",
-                                                  max_price=200,
-                                                  maximum_departure_time=time(23, 00),
-                                                  minimum_departure_time=time(5, 00))
-for v in viajes:
-    print(v)
+API = Ouigo(country="es")
+travels = API.find_travels(origin="Madrid",
+                           destination="Barcelona",
+                           outbound="2024-01-21",
+                           max_price=140,
+                           maximum_departure_time=time(23, 00),
+                           minimum_departure_time=time(5, 00))
+for train in travels:
+    print(train)
+    print(f"destination {train.destination} price {train.price} ")
 
 
-
+"""
 # Le envío una fecha de inicio, un número de veces y el día de sálida (viernes, sábado, domingo, etc..) y me
 # devuelve una lista con fechas ordenadas, (Semana 1, semana 2, ...)
 def obtener_listado_fechas(fecha_inicio, numero_busquedas: int, dia_semana_salida: int):
@@ -49,8 +47,6 @@ def obtener_listado_fechas(fecha_inicio, numero_busquedas: int, dia_semana_salid
 
     return lista_fechas
 
-
-"""
 def main():
     API = Ouigo(country="es")
     today = datetime.today()
@@ -134,4 +130,6 @@ fin = datetime.now()
 # Calcula la diferencia para obtener el tiempo total
 tiempo_total = fin - inicio
 
-print(f"El script tardó {tiempo_total} segundos en ejecutarse.")"""
+print(f"El script tardó {tiempo_total} segundos en ejecutarse.")
+
+"""

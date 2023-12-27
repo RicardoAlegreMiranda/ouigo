@@ -4,6 +4,8 @@ import json
 # External
 import requests
 
+class DateProcessingError(Exception):
+    pass
 
 class SessionManager:
     BASE_SITE_FOR_SESSION_URL = "https://www.ouigo.com/es/"
@@ -21,7 +23,7 @@ class SessionManager:
 
         # Get the necessary token for the query's
 
-def update_token(country):
+def update_token(country: str):
     url_es = "https://mdw02.api-es.ouigo.com/api/Token/login"
     url_fr = "https://mdw.api-fr.ouigo.com/api/Token/login"
 
@@ -52,4 +54,3 @@ def update_token(country):
         raise DateProcessingError(f"Fail: update_token,  "
                                   f"status code: {response.status_code},"
                                   f"text: {response.text}")
-
