@@ -70,14 +70,12 @@ class TestOuigo(unittest.TestCase):
         self.assertEquals(result, "PT1")
 
     def test_find_station_name_by_code(self):
-        # Prueba el método find_station_name_by_code
         code = "MT1"
         result = self.ouigo_es.find_station_name_by_code(code)
         assert isinstance(result, str)
         self.assertEquals(result, "Madrid - Todas las estaciones")
 
     def test_invalid_country(self):
-        # Prueba el caso en que se proporciona un país no válido
         with self.assertRaises(DateProcessingError):
             Ouigo(country="INVALID_COUNTRY")
 
