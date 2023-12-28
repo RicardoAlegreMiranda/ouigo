@@ -41,21 +41,116 @@ api = Ouigo(country="ES")
 
 ```
 ## find_travels
+This method searches for all the stations connected to the source station, and returns a list of Train objects with the information of all the trips available for that day at the source station.
+
+From each trip you obtain the data:
+- departure_timestamp = The departure time of the train in datetime format
+- _u_i_c_station_code: the arrival station code
+- name = the name of the departure station
+- destination = the name of the arrival station
+- outbound the departure date of the trip (string format)
 ```python
 from ouigo import Ouigo
 
 # ES for search in Spain or FR for search in France
 API = Ouigo(country="es")  
 travels = API.find_travels(origin="Madrid", 
-                           destination="Barcelona",
-                           outbound="2024-01-21",  # you can use this format(yyyy-mm-dd) or datetime object
-                           max_price=140,
-                           maximum_departure_time=time(23, 00), 
-                           minimum_departure_time=time(5, 00))
+                           outbound="2024-01-21")
+
 for train in travels:
     print(train)
-    print(f"price {train.price}, is the best price? {train.is_best_price}")
+          
+
+"""
+console output example: 
+
+Trip(departure_timestamp=datetime.time(18, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=39.0, destination='Alicante - Terminal', outbound='2024-01-21')
+Trip(departure_timestamp=datetime.time(7, 5), _u_i_c_station_code='7160000', name='Madrid - Puerta de Atocha - Almudena Grandes', price=22.0, destination='Barcelona - Sants', outbound='2024-01-21')
+...................... etc etc etc
+"""
 ```
 
-Trip(departure_timestamp=datetime.time(7, 5), _u_i_c_station_code='7160000', name='Madrid - Puerta de Atocha - Almudena Grandes', price=22.0, destination='Barcelona - Sants', outbound='2024-01-21')
-destination Barcelona - Sants price 22.0 
+You can also filter by indicating:
+- destination = Name of the destination or station code (you can consult the json of the stations)
+- max_price = filters the maximum price
+- maximum_departure_time = data in time format,
+- minimum_departure_time = data in time format,
+```python
+
+
+from ouigo import Ouigo
+from datetime import time
+from ouigo.types_class import Trip
+
+# ES for search in Spain or FR for search in France
+API = Ouigo(country="FR")
+travels: Trip = API.find_travels(origin="Paris",
+                                 outbound="2024-01-21",  
+                                 destination="Nantes",
+                                 max_price=25,
+                                 maximum_departure_time=time(13, 00),
+                                 minimum_departure_time=time(7, 00))
+
+for train in travels:
+    print(f"price {train.price}, departure time {train.departure_timestamp} ")
+
+"""
+Console output example:
+
+price 10.0, departure time 07:11:00 
+price 10.0, departure time 07:26:00 
+price 16.0, departure time 07:44:00 
+"""
+```
+
+## get_list_60_days_travels
+It is a quick method to find the best prices of the month to a specific destination
+
+Returns a 60-day list of the lowest prices between 2 destinations, it is the same as what happens when enter
+        the Ouigo website and display the calendar, it shows the cheapest price of each day
+
+```python
+from ouigo import Ouigo
+
+# ES for search in Spain or FR for search in France
+API = Ouigo(country="ES")
+prices_to_valencia = API.get_list_60_days_travels(outbound="2024-01-15",
+                                                  origin="Madrid",
+                                                  destination="Valencia")
+for prices in prices_to_valencia:
+    print(prices)
+"""
+Console output
+Train(date='2024-01-15', price=9.0, is_best_price=True, is_best_price_month=True, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-16', price=9.0, is_best_price=True, is_best_price_month=True, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-17', price=9.0, is_best_price=True, is_best_price_month=True, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-18', price=9.0, is_best_price=True, is_best_price_month=True, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-19', price=15.0, is_best_price=False, is_best_price_month=False, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-20', price=15.0, is_best_price=False, is_best_price_month=False, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-21', price=9.0, is_best_price=True, is_best_price_month=True, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+Train(date='2024-01-22', price=13.0, is_best_price=False, is_best_price_month=True, Destination='Valencia - Joaquín Sorolla', is_promo=False)
+.....etc etc etc
+"""
+```
+
+# journal_search
+It is a quick method to find all the prices for a specific day and place, it is useful for finding return trips or a quick way to find outward trips.
+```python
+# ES for search in Spain or FR for search in France
+API = Ouigo(country="ES")
+prices_to_valencia = API.journal_search(outbound_date="2024-01-15",
+                                        origin="Madrid",
+                                        destination="Valencia")
+for prices in prices_to_valencia:
+    print(prices)
+
+
+"""
+Console output:
+Trip(departure_timestamp=datetime.time(7, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=13.0, destination='Valencia - Joaquín Sorolla', outbound='2024-01-15')
+Trip(departure_timestamp=datetime.time(11, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=9.0, destination='Valencia - Joaquín Sorolla', outbound='2024-01-15')
+Trip(departure_timestamp=datetime.time(13, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=9.0, destination='Valencia - Joaquín Sorolla', outbound='2024-01-15')
+Trip(departure_timestamp=datetime.time(17, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=15.0, destination='Valencia - Joaquín Sorolla', outbound='2024-01-15')
+Trip(departure_timestamp=datetime.time(20, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=9.0, destination='Valencia - Joaquín Sorolla', outbound='2024-01-15')
+"""
+```

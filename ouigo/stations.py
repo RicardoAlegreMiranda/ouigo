@@ -14,6 +14,10 @@ URL_API_STATIONS_ES = "https://mdw02.api-es.ouigo.com/api/Data/GetStations"
 URL_API_STATIONS_FR = "https://mdw.api-fr.ouigo.com/api/Data/GetStations"
 
 
+class DateProcessingError(Exception):
+    pass
+
+
 def load_stations(country: str):
     """
     This method call the API for get the stations of France or Spain, save the stations for futures call of this method
@@ -58,8 +62,7 @@ def load_stations(country: str):
                 return stations_es
         else:
             # If the response is not ok
-            print("API call error load_stations ", response_stations.status_code)
-            return None
+            raise DateProcessingError(f"API call error load_stations, {response_stations.status_code}")
 
     except Exception as e:
-        print("API call exception load_stations ", e)
+        raise DateProcessingError(f"API call exception load_stations, {e}")

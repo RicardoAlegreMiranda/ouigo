@@ -1,17 +1,12 @@
 from ouigo import Ouigo
-from datetime import time
 
-API = Ouigo(country="es")
-travels = API.find_travels(origin="Madrid",
-                           destination="Barcelona",
-                           outbound="2024-01-21",
-                           max_price=140,
-                           maximum_departure_time=time(23, 00),
-                           minimum_departure_time=time(5, 00))
-for train in travels:
-    print(train)
-    print(f"destination {train.destination} price {train.price} ")
-
+# ES for search in Spain or FR for search in France
+API = Ouigo(country="ES")
+prices_to_valencia = API.journal_search(outbound_date="2024-01-15",
+                                        origin="Madrid",
+                                        destination="Valencia")
+for prices in prices_to_valencia:
+    print(prices)
 
 """
 # Le envío una fecha de inicio, un número de veces y el día de sálida (viernes, sábado, domingo, etc..) y me
