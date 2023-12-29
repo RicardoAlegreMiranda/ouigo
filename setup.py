@@ -14,8 +14,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Ricardo Alegre",
-    author_email="https://www.linkedin.com/in/ricardo-alegre-miranda/",
-    url="https://github.com/RicardoAlegreMiranda/ouigo-py",
+    author_email="ricardomanuel.alegre@gmail.com",
+    url="https://github.com/RicardoAlegreMiranda/ouigo",
     packages=["ouigo"],
     classifiers=[
         "Programming Language :: Python :: 3",
