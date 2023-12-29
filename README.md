@@ -4,7 +4,8 @@
 This module allows you to retrieve the travels in the API of Ouigo, It also serves to filter the best prices and schedules when searching for trains
 
 This is done directly through Ouigo's API, and does not require an API key. All information is obtained by public methods.
-
+# Screenshot
+![ouigo_find_travels3.JPG](..%2F..%2FDownloads%2Fouigo_find_travels3.JPG)
 ## Disclaimer
 > __DISCLAIMER:__ This library is not affiliated, endorsed, or sponsored by Ouigo or any of its affiliates.  
 > All trademarks related to Ouigo and its affiliates are owned by the relevant companies.  
