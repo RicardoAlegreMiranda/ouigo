@@ -1,5 +1,5 @@
 # Ouigo Python
-
+[![Coverage Status](https://coveralls.io/repos/github/RicardoAlegreMiranda/ouigo/badge.svg?branch=master)](https://coveralls.io/github/RicardoAlegreMiranda/ouigo?branch=master)
 
 This module allows you to retrieve the travels in the API of Ouigo, It also serves to filter the best prices and schedules when searching for trains
 

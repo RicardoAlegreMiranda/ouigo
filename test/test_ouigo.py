@@ -67,13 +67,13 @@ class TestOuigo(unittest.TestCase):
         target_name = "Paris"
         result = self.ouigo_fr.find_station_code_by_name(target_name)
         assert isinstance(result, str)
-        self.assertEquals(result, "PT1")
+        self.assertEqual(result, "PT1")
 
     def test_find_station_name_by_code(self):
         code = "MT1"
         result = self.ouigo_es.find_station_name_by_code(code)
         assert isinstance(result, str)
-        self.assertEquals(result, "Madrid - Todas las estaciones")
+        self.assertEqual(result, "Madrid - Todas las estaciones")
 
     def test_invalid_country(self):
         with self.assertRaises(DateProcessingError):
