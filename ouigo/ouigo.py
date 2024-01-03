@@ -277,7 +277,7 @@ class Ouigo:
 
         stations_dict = {station._u_i_c_station_code: station for station in self.list_stations}
         for code, info in stations_dict.items():
-            if info.name == target_name.capitalize() or target_name.capitalize() in info.synonyms:
+            if info.name.lower() == target_name.lower() or target_name.capitalize() in info.synonyms:
                 return code  # The station code
         raise DateProcessingError(f"{target_name} is not a valid name")
 
