@@ -48,8 +48,9 @@ def load_stations(country: str):
             stations_es = {}
             response_stations = requests.get(URL_API_STATIONS_ES, timeout=10)  # Call the API to get the stations
 
-        # If the response is OK
+        # If the response is OK (for Spain o France)
         if response_stations.status_code == 200:
+
             stations_json = response_stations.json()
 
             # Convert the list of dictionaries to a list of Station objects
@@ -66,3 +67,4 @@ def load_stations(country: str):
 
     except Exception as e:
         raise DateProcessingError(f"API call exception load_stations, {e}")
+

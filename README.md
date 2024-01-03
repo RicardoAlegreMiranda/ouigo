@@ -1,27 +1,11 @@
 # Ouigo Python
-[![Coverage Status](https://coveralls.io/repos/github/RicardoAlegreMiranda/ouigo/badge.svg?branch=master)](https://coveralls.io/github/RicardoAlegreMiranda/ouigo?branch=master)
 
 This module allows you to retrieve the travels in the API of Ouigo, It also serves to filter the best prices and schedules when searching for trains
 
 This is done directly through Ouigo's API, and does not require an API key. All information is obtained by public methods.
-# Screenshot
+# Screenshots
+![ouigo_find_travels5.JPG](..%2F..%2FDownloads%2Fouigo_find_travels5.JPG)
 ![ouigo_find_travels3.JPG](..%2F..%2FDownloads%2Fouigo_find_travels3.JPG)
-## Disclaimer
-> __DISCLAIMER:__ This library is not affiliated, endorsed, or sponsored by Ouigo or any of its affiliates.  
-> All trademarks related to Ouigo and its affiliates are owned by the relevant companies.  
-> The author(s) of this library assume no responsibility for any consequences resulting from the use of this library.  
-> The author(s) of this library also assume no liability for any damages, losses, or expenses that may arise from the use of this library.  
-> Any use of this library is entirely at the user's own risk.  
-> It is solely the user's responsibility to ensure compliance with Ouigo's terms of use and any applicable laws 
-> and regulations.  
-> The library is an independent project aimed at providing a convenient way to interact with the Ouigo API, allowing
-> individuals to find travels for personal use, and then ultimately purchase them via Ouigo's website.
-> While the author(s) will make efforts to ensure the library's functionality, they do not guarantee the accuracy,
-> completeness, or timeliness of the information provided.  
-> The author(s) do not guarantee the availability or continuity of the library, and updates may not be guaranteed.  
-> Support for this library may be provided at the author(s)'s discretion, but it is not guaranteed.  
-> Users are encouraged to report any issues or feedback to the author(s) via appropriate channels.  
-> By using this library, users acknowledge that they have read, understood, and agreed to the terms of this disclaimer.
 
 ## Installation
 Run the following command in the terminal:
@@ -155,3 +139,21 @@ Trip(departure_timestamp=datetime.time(17, 15), _u_i_c_station_code='7117000', n
 Trip(departure_timestamp=datetime.time(20, 15), _u_i_c_station_code='7117000', name='Madrid - Chamartín - Clara Campoamor', price=9.0, destination='Valencia - Joaquín Sorolla', outbound='2024-01-15')
 """
 ```
+[![Coverage Status](https://coveralls.io/repos/github/RicardoAlegreMiranda/ouigo/badge.svg?branch=master)](https://coveralls.io/github/RicardoAlegreMiranda/ouigo?branch=master)
+
+## Disclaimer
+> __DISCLAIMER:__ This library is not affiliated, endorsed, or sponsored by Ouigo or any of its affiliates.  
+> All trademarks related to Ouigo and its affiliates are owned by the relevant companies.  
+> The author(s) of this library assume no responsibility for any consequences resulting from the use of this library.  
+> The author(s) of this library also assume no liability for any damages, losses, or expenses that may arise from the use of this library.  
+> Any use of this library is entirely at the user's own risk.  
+> It is solely the user's responsibility to ensure compliance with Ouigo's terms of use and any applicable laws 
+> and regulations.  
+> The library is an independent project aimed at providing a convenient way to interact with the Ouigo API, allowing
+> individuals to find travels for personal use, and then ultimately purchase them via Ouigo's website.
+> While the author(s) will make efforts to ensure the library's functionality, they do not guarantee the accuracy,
+> completeness, or timeliness of the information provided.  
+> The author(s) do not guarantee the availability or continuity of the library, and updates may not be guaranteed.  
+> Support for this library may be provided at the author(s)'s discretion, but it is not guaranteed.  
+> Users are encouraged to report any issues or feedback to the author(s) via appropriate channels.  
+> By using this library, users acknowledge that they have read, understood, and agreed to the terms of this disclaimer.
