@@ -7,8 +7,8 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="ouigo-py",
-    version="1.0.0",
+    name="ouigo",
+    version="1.0.2",
     description="A module which allows you to retrieve data about the cheapest one-way travels of Ouigo "
     "in a date range.",
     long_description=long_description,
