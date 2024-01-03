@@ -4,8 +4,9 @@ This module allows you to retrieve the travels in the API of Ouigo, It also serv
 
 This is done directly through Ouigo's API, and does not require an API key. All information is obtained by public methods.
 # Screenshots
-![ouigo_find_travels5.JPG](..%2F..%2FDownloads%2Fouigo_find_travels5.JPG)
-![ouigo_find_travels3.JPG](..%2F..%2FDownloads%2Fouigo_find_travels3.JPG)
+![ouigo_find_travels5](https://github.com/RicardoAlegreMiranda/ouigo/assets/40073353/3290b05c-dccf-4e37-a28e-26d2c605a1af)
+
+![ouigo_find_travels3](https://github.com/RicardoAlegreMiranda/ouigo/assets/40073353/23fb07b1-a700-48fa-b4bf-ad25c7f662e8)
 
 ## Installation
 Run the following command in the terminal:
