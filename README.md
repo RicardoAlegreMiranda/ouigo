@@ -3,10 +3,6 @@
 This module allows you to retrieve the travels in the API of Ouigo, It also serves to filter the best prices and schedules when searching for trains
 
 This is done directly through Ouigo's API, and does not require an API key. All information is obtained by public methods.
-# Screenshots
-![ouigo_find_travels5](https://github.com/RicardoAlegreMiranda/ouigo/assets/40073353/3290b05c-dccf-4e37-a28e-26d2c605a1af)
-
-![ouigo_find_travels3](https://github.com/RicardoAlegreMiranda/ouigo/assets/40073353/23fb07b1-a700-48fa-b4bf-ad25c7f662e8)
 
 ## Installation
 Run the following command in the terminal:
@@ -141,6 +137,13 @@ Trip(departure_timestamp=datetime.time(20, 15), _u_i_c_station_code='7117000', n
 """
 ```
 [![Coverage Status](https://coveralls.io/repos/github/RicardoAlegreMiranda/ouigo/badge.svg?branch=master)](https://coveralls.io/github/RicardoAlegreMiranda/ouigo?branch=master)
+
+
+# Screenshots
+![ouigo_find_travels5](https://github.com/RicardoAlegreMiranda/ouigo/assets/40073353/3290b05c-dccf-4e37-a28e-26d2c605a1af)
+
+![ouigo_find_travels3](https://github.com/RicardoAlegreMiranda/ouigo/assets/40073353/23fb07b1-a700-48fa-b4bf-ad25c7f662e8)
+
 
 ## Disclaimer
 > __DISCLAIMER:__ This library is not affiliated, endorsed, or sponsored by Ouigo or any of its affiliates.  
